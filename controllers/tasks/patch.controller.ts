@@ -8,30 +8,90 @@ export default function makePatchTaskController(
   findById: any
 ) {
   async function updateTaskController(req: Request) {
+    const userId = req.headers.user_id;
+    if (!userId) {
+      return {
+        status: 400,
+        body: {
+          message: `user_id missing`
+        }
+      };
+    }
+
     const id = req.params.id;
     const fieldsToUpdate = req.body;
+    const result = await update(id, fieldsToUpdate);
 
-    const updatedTask = await update(id, fieldsToUpdate);
-    return {
-      status: 200,
-      body: updatedTask
-    };
+    if (result.matchedCount === 0) {
+      return {
+        status: 400,
+        body: {
+          message: 'No tasks matched for the id ' + id
+        }
+      };
+    }
+
+    if (result.modifiedCount < 1) {
+      return {
+        status: 400,
+        body: {
+          message: 'Already updated.'
+        }
+      };
+    } else {
+      const task = await findById(userId, id);
+      return {
+        status: 200,
+        body: {
+          message: 'Task updated successfully!',
+          task: task
+        }
+      };
+    }
   }
 
   async function pushTaskController(req: Request) {
+    const userId = req.headers.user_id! as string;
+    if (!userId) {
+      return {
+        status: 400,
+        body: {
+          message: `user_id missing`
+        }
+      };
+    }
+
     const id = req.params.id;
     const fieldsToUpdate = {
       status: TaskStatus.PUSHED
     };
 
-    const updatedTask = await update(id, fieldsToUpdate);
+    const result = await update(id, fieldsToUpdate);
+    if (result.matchedCount === 0) {
+      return {
+        status: 400,
+        body: {
+          message: 'No tasks matched for the id ' + id
+        }
+      };
+    }
 
-    const foundTask = await findById(id, fieldsToUpdate);
+    if (result.modifiedCount < 1) {
+      return {
+        status: 400,
+        body: {
+          message: 'Task is in pushed status already'
+        }
+      };
+    }
+
+    const foundTask = await findById(userId, id);
 
     const task: Task = {
       id: generateId(),
       title: foundTask.title,
       description: foundTask.description,
+      userId: userId,
       status: TaskStatus.ACTIVE,
       date: new Date(
         new Date().setDate(new Date().getDate() + 1)
@@ -41,7 +101,11 @@ export default function makePatchTaskController(
 
     return {
       status: 200,
-      body: createdTask
+      body: {
+        message: 'Task pushed to tomorrow',
+        oldTask: foundTask,
+        newTask: createdTask
+      }
     };
   }
 

@@ -10,6 +10,7 @@ export enum TaskStatus {
 }
 
 export interface TaskPayload {
+  userId: string;
   title: string;
   description: string;
 }

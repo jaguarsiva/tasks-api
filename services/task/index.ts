@@ -7,18 +7,18 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
     return insertedTask;
   }
 
-  async function findAll() {
-    const tasks = await model.find({}, { _id: 0, __v: 0 });
+  async function findAll(userId: string) {
+    const tasks = await model.find({ userId }, { _id: 0, __v: 0 });
     return tasks;
   }
 
-  async function findById(id: string) {
-    const task = await model.findOne({ id }, { _id: 0, __v: 0 });
+  async function findById(userId: string, id: string) {
+    const task = await model.findOne({ userId, id }, { _id: 0, __v: 0 });
     return task;
   }
 
-  async function findByDate(date: string) {
-    const task = await model.find({ date }, { _id: 0, __v: 0 });
+  async function findByDate(userId: string, date: string) {
+    const task = await model.find({ userId, date }, { _id: 0, __v: 0 });
     return task;
   }
 

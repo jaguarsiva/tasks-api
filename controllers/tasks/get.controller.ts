@@ -8,16 +8,25 @@ export default function makeGetTaskController(
 ) {
   return async function getTaskController(req: Request) {
     const query = req.query;
+    const userId = req.headers.user_id;
+    if (!userId) {
+      return {
+        status: 400,
+        body: {
+          message: `user_id missing`
+        }
+      };
+    }
 
     if (query.date) {
-      const tasks = await findByDate(query.date);
+      const tasks = await findByDate(userId, query.date);
       return {
         body: {
           tasks
         }
       };
     } else if (query.id) {
-      const task = await findById(query.id);
+      const task = await findById(userId, query.id);
       if (task) return { status: 200, body: task };
       else {
         return {
@@ -28,7 +37,7 @@ export default function makeGetTaskController(
         };
       }
     } else {
-      const tasks = await findAll();
+      const tasks = await findAll(userId);
       return {
         body: {
           tasks

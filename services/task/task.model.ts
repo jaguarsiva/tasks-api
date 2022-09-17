@@ -7,6 +7,11 @@ const taskSchema = new Schema({
     required: true,
     unique: true
   },
+  userId: {
+    type: String,
+    required: true,
+    unique: false
+  },
   status: {
     type: String,
     required: true,
