@@ -2,7 +2,9 @@ import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 dotenv.config();
 
-export function setDatabase() {
+let dbInstance: typeof mongoose | null = null;
+
+export function setup() {
   mongoose.plugin((schema: any) => {
     schema.options.toJSON = {
       versionKey: false,
@@ -15,34 +17,35 @@ export function setDatabase() {
   mongoose.connection.on('error', (error) => {
     console.error('connection error:', error);
   });
-
-  let dbInstance: typeof mongoose | null = null;
-
-  async function connect() {
-    const uri: string = process.env.MONGO_URI!;
-    const options = {
-      autoIndex: true
-    };
-
-    await mongoose.connect(uri, options);
-    dbInstance = mongoose;
-  }
-
-  async function disconnect() {
-    if (dbInstance) {
-      await dbInstance.disconnect();
-      dbInstance = null;
-    }
-    await mongoose.connection.close();
-  }
-
-  function getDbInstance() {
-    return dbInstance;
-  }
-
-  return Object.freeze({
-    connect,
-    disconnect,
-    getDbInstance
-  });
 }
+
+export async function connect() {
+  const uri: string = process.env.MONGO_URI!;
+  const options = {
+    autoIndex: true
+  };
+
+  await mongoose.connect(uri, options);
+  dbInstance = mongoose;
+}
+
+export async function disconnect() {
+  if (dbInstance) {
+    await dbInstance.disconnect();
+    dbInstance = null;
+  }
+  await mongoose.connection.close();
+}
+
+export function getDbInstance() {
+  return dbInstance;
+}
+
+const db = Object.freeze({
+  setup,
+  connect,
+  disconnect,
+  getDbInstance
+});
+
+export default db;

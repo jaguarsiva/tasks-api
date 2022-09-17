@@ -39,7 +39,7 @@ export default function makePatchTaskController(
         }
       };
     } else {
-      const task = await findById(userId, id);
+      const task = await findById(id);
       return {
         status: 200,
         body: {
@@ -60,8 +60,18 @@ export default function makePatchTaskController(
         }
       };
     }
-
     const id = req.params.id;
+    const foundTask = await findById(id);
+
+    if (foundTask.status !== TaskStatus.ACTIVE) {
+      return {
+        status: 400,
+        body: {
+          message: 'Can push only active tasks!'
+        }
+      };
+    }
+
     const fieldsToUpdate = {
       status: TaskStatus.PUSHED
     };
@@ -84,8 +94,6 @@ export default function makePatchTaskController(
         }
       };
     }
-
-    const foundTask = await findById(userId, id);
 
     const task: Task = {
       id: generateId(),

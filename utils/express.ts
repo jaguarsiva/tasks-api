@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { setDatabase } from '../services/db';
+import db from '../services/db';
 
 type Controller = (
   req: Request,
@@ -12,9 +12,6 @@ interface ControllerResponse {
   status?: number;
   headers?: any;
 }
-
-// Set Database
-const db = setDatabase();
 
 export default function makeExpressCallback(controller: Controller) {
   return async function expressCallback(

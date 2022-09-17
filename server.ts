@@ -1,11 +1,17 @@
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
-import routes from './routes/index';
+import cron from 'node-cron';
+import routes from './routes';
+import jobs from './jobs';
+import db from './services/db';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// Setup database
+db.setup();
 
 app.use(express.json());
 app.use('/api/v1', routes);
@@ -29,3 +35,8 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 app.listen(port, () => {
   console.log('app listening on port', port);
 });
+
+// CRON Jobs
+
+// Everyday at 11:30 PM, this job pushes every active tasks
+cron.schedule('0 30 23 * * *', jobs.pushActiveTasksJob);

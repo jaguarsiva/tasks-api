@@ -26,7 +26,7 @@ export default function makeGetTaskController(
         }
       };
     } else if (query.id) {
-      const task = await findById(userId, query.id);
+      const task = await findById(query.id);
       if (task) return { status: 200, body: task };
       else {
         return {
