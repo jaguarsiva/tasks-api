@@ -13,7 +13,7 @@ export default function makeUserService(model: Model<UserDocument, {}, {}>) {
   }
 
   async function findById(id: string) {
-    const user = await model.findOne({ id }, { _id: 0, __v: 0 });
+    const user = await model.findOne({ id }, { _id: 0, __v: 0, password: 0 });
     return user;
   }
 
