@@ -8,7 +8,7 @@ export default function makeUserService(model: Model<UserDocument, {}, {}>) {
   }
 
   async function findAll() {
-    const users = await model.find({}, { _id: 0, __v: 0 });
+    const users = await model.find({}, { _id: 0, __v: 0, password: 0 });
     return users;
   }
 
