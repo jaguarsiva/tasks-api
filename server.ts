@@ -4,11 +4,15 @@ import cron from 'node-cron';
 import routes from './routes';
 import jobs from './jobs';
 import db from './services/db';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+// use cors
+app.use(cors({}));
 
 // Setup database
 db.setup();
