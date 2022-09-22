@@ -102,7 +102,7 @@ export default function makePatchTaskController(
       description: foundTask.description,
       userId: userId,
       status: TaskStatus.ACTIVE,
-      date: moment().tz('India/Chennai').add(1, 'd').format('DD/MM/YYYY')
+      date: moment().tz('Asia/Kolkata').add(1, 'd').format('DD/MM/YYYY')
     };
     const createdTask = await create(task);
 

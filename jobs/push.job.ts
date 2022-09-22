@@ -26,10 +26,7 @@ export default function makePushActiveTasksJob(
       console.log({ result });
 
       const status = TaskStatus.ACTIVE;
-      const date = moment()
-        .tz('India/Chennai')
-        .add(1, 'd')
-        .format('DD/MM/YYYY');
+      const date = moment().tz('Asia/Kolkata').add(1, 'd').format('DD/MM/YYYY');
 
       const tasksToInsert = activeTasks.map((task: Task) => {
         return {

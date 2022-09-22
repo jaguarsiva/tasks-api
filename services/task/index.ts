@@ -37,7 +37,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function findAllActiveTasks() {
     const filterExp = {
       status: TaskStatus.ACTIVE,
-      date: moment().tz('India/Chennai').format('DD/MM/YYYY')
+      date: moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
     };
     const projectionExp = { _id: 0, __v: 0 };
     const tasks = await model.find(filterExp, projectionExp);
@@ -47,7 +47,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function updateAllActiveTasks() {
     const filterExp = {
       status: TaskStatus.ACTIVE,
-      date: moment().tz('India/Chennai').format('DD/MM/YYYY')
+      date: moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
     };
     const fieldsToUpdate = {
       status: TaskStatus.PUSHED

@@ -10,7 +10,7 @@ export default function buildMakeTask(generateId: () => string) {
     const userId = data.userId;
     const description = data.description.trim();
     const status = TaskStatus.ACTIVE;
-    const date = moment().tz('India/Chennai').format('DD/MM/YYYY');
+    const date = moment().tz('Asia/Kolkata').format('DD/MM/YYYY');
 
     return Object.freeze({
       getId: () => id,

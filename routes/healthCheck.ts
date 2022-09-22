@@ -3,7 +3,7 @@ import moment from 'moment-timezone';
 
 const router = express.Router();
 router.get('/', (req: Request, res: Response) => {
-  var now = moment().tz('India/Chennai');
+  var now = moment().tz('Asia/Kolkata');
   res.status(200).json({
     date: now.format('dddd, Do MMMM YYYY'),
     time: now.format('hh:mm:ss A'),
