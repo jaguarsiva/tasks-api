@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "node build/server.js",
-    "postinstall": "tsc",
-    "build": "tsc",
+    "postinstall": "npx tsc",
+    "build": "npx tsc",
     "dev": "nodemon server.ts"
   },
   "author": "siva_vchandran",
