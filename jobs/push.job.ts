@@ -1,6 +1,7 @@
 import db from '../services/db';
-import { TaskStatus } from '../utils/types/task.type';
+import { Task, TaskStatus } from '../utils/types/task.type';
 import generateId from '../utils/idGenerator';
+import moment from 'moment-timezone';
 
 export default function makePushActiveTasksJob(
   findAllActiveTasks: any,
@@ -25,10 +26,12 @@ export default function makePushActiveTasksJob(
       console.log({ result });
 
       const status = TaskStatus.ACTIVE;
-      const date = new Date(
-        new Date().setDate(new Date().getDate() + 1)
-      ).toLocaleDateString();
-      const tasksToInsert = activeTasks.map((task) => {
+      const date = moment()
+        .tz('India/Chennai')
+        .add(1, 'd')
+        .format('DD/MM/YYYY');
+
+      const tasksToInsert = activeTasks.map((task: Task) => {
         return {
           id: generateId(),
           title: task.title,

@@ -1,6 +1,7 @@
 import { Request } from 'express';
 import generateId from '../../utils/idGenerator';
 import { Task, TaskStatus } from '../../utils/types/task.type';
+import moment from 'moment-timezone';
 
 export default function makePatchTaskController(
   create: any,
@@ -101,9 +102,7 @@ export default function makePatchTaskController(
       description: foundTask.description,
       userId: userId,
       status: TaskStatus.ACTIVE,
-      date: new Date(
-        new Date().setDate(new Date().getDate() + 1)
-      ).toLocaleDateString()
+      date: moment().tz('India/Chennai').add(1, 'd').format('DD/MM/YYYY')
     };
     const createdTask = await create(task);
 

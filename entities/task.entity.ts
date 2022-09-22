@@ -1,5 +1,5 @@
 import { TaskPayload, TaskStatus } from '../utils/types/task.type';
-import moment from 'moment';
+import moment from 'moment-timezone';
 
 export default function buildMakeTask(generateId: () => string) {
   return function makeTask(data: TaskPayload) {
@@ -10,7 +10,7 @@ export default function buildMakeTask(generateId: () => string) {
     const userId = data.userId;
     const description = data.description.trim();
     const status = TaskStatus.ACTIVE;
-    const date = moment().format('DD/MM/YYYY');
+    const date = moment().tz('India/Chennai').format('DD/MM/YYYY');
 
     return Object.freeze({
       getId: () => id,

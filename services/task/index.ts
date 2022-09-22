@@ -1,5 +1,6 @@
 import { Model } from 'mongoose';
 import { Task, TaskDocument, TaskStatus } from '../../utils/types/task.type';
+import moment from 'moment-timezone';
 
 export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function create(task: Task) {
@@ -36,7 +37,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function findAllActiveTasks() {
     const filterExp = {
       status: TaskStatus.ACTIVE,
-      date: new Date().toLocaleDateString()
+      date: moment().tz('India/Chennai').format('DD/MM/YYYY')
     };
     const projectionExp = { _id: 0, __v: 0 };
     const tasks = await model.find(filterExp, projectionExp);
@@ -46,7 +47,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function updateAllActiveTasks() {
     const filterExp = {
       status: TaskStatus.ACTIVE,
-      date: new Date().toLocaleDateString()
+      date: moment().tz('India/Chennai').format('DD/MM/YYYY')
     };
     const fieldsToUpdate = {
       status: TaskStatus.PUSHED
