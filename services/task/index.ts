@@ -61,6 +61,11 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
     return results;
   }
 
+  async function deleteTomoTask(filterExp: any) {
+    const result = await model.findOneAndDelete(filterExp);
+    return result;
+  }
+
   return Object.freeze({
     create,
     findAll,
@@ -69,6 +74,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
     update,
     findAllActiveTasks,
     pushAllActiveTasks,
-    insertPushedTasks
+    insertPushedTasks,
+    deleteTomoTask
   });
 }

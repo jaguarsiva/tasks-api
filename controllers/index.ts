@@ -7,6 +7,7 @@ import makeDeleteUserController from './users/delete.controller';
 import makePostTaskController from './tasks/post.controller';
 import makeGetTaskController from './tasks/get.controller';
 import makePatchTaskController from './tasks/patch.controller';
+import makeBringBackTaskController from './tasks/delete.controller';
 
 const postUserController = makePostUserController(
   entities.makeUser,
@@ -40,6 +41,12 @@ const { updateTaskController, pushTaskController } = makePatchTaskController(
   entities.makeTask
 );
 
+const bringBackTaskController = makeBringBackTaskController(
+  services.task.findById,
+  services.task.update,
+  services.task.deleteTomoTask
+);
+
 // Callbacks
 
 const postUserCallback = makeExpressCallback(postUserController);
@@ -51,6 +58,7 @@ const postTaskCallback = makeExpressCallback(postTaskController);
 const getTaskCallback = makeExpressCallback(getTaskController);
 const updateTaskCallback = makeExpressCallback(updateTaskController);
 const pushTaskCallback = makeExpressCallback(pushTaskController);
+const bringBackTaskCallback = makeExpressCallback(bringBackTaskController);
 
 const controllers = Object.freeze({
   postUserCallback,
@@ -61,7 +69,8 @@ const controllers = Object.freeze({
   postTaskCallback,
   getTaskCallback,
   updateTaskCallback,
-  pushTaskCallback
+  pushTaskCallback,
+  bringBackTaskCallback
 });
 
 export default controllers;

@@ -15,4 +15,7 @@ router.patch('/:id', controllers.updateTaskCallback);
 // push task to tomorrow
 router.patch('/:id/push', controllers.pushTaskCallback);
 
+// bring back task from pushed
+router.delete('/:id/push', controllers.bringBackTaskCallback);
+
 export default router;
