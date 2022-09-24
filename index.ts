@@ -23,7 +23,6 @@ app.use('/api/v1', routes);
 
 // Error Handler
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  logger.info(`${req.method} ${req.originalUrl}`);
   logger.error('error', error);
 
   if (error.exception) {
