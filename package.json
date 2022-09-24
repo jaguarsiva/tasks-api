@@ -6,7 +6,6 @@
   "scripts": {
     "start": "NODE_ENV=production node build/index.js",
     "postinstall": "npx tsc",
-    "build": "npx tsc",
     "dev": "NODE_ENV=development nodemon index.ts"
   },
   "author": "siva_vchandran",
