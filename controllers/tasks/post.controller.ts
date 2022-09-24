@@ -31,10 +31,11 @@ export default function makePostTaskController(
     };
 
     const createdTask = await createTask(task);
+    const { _id, __v, ...body } = createdTask;
 
     return {
       status: 200,
-      body: createdTask
+      body
     };
   };
 }

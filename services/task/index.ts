@@ -5,7 +5,7 @@ import moment from 'moment-timezone';
 export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function create(task: Task) {
     const insertedTask = await model.create(task);
-    return insertedTask;
+    return insertedTask.toJSON();
   }
 
   async function findAll(userId: string) {

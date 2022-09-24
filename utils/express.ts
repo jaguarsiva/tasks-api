@@ -22,13 +22,11 @@ export default function makeExpressCallback(controller: Controller) {
   ) {
     try {
       await db.connect();
-      logger.info(`${req.method} ${req.originalUrl}`);
       const result = await controller(req, res, next);
       await db.disconnect();
       if (result) {
         const { headers, status = 200, body } = result;
         if (headers) res.set(headers);
-        logger.info('response', { status, body });
         res.status(status).json(body);
       }
     } catch (error) {

@@ -4,10 +4,12 @@ import moment from 'moment-timezone';
 import joi from 'joi';
 
 const taskSchema = joi
-  .object({
+  .object()
+  .keys({
     title: joi.string().min(3).required(),
     description: joi.string().min(0).required(),
-    userId: joi.string().required()
+    userId: joi.string().required(),
+    date: joi.string()
   })
   .options({ abortEarly: false });
 

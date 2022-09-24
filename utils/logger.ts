@@ -1,21 +1,26 @@
-import { createLogger, format, transports } from 'winston';
+const winston = require('winston');
+require('winston-papertrail').Papertrail;
 
-const { combine, metadata, printf, timestamp, colorize, prettyPrint } = format;
+const { createLogger, format, transports } = winston;
+const { combine, printf, timestamp, colorize, prettyPrint } = format;
 
-const fileFormat = combine(
-  timestamp({ format: 'DD-MM-YYYY hh:mm:ss A' }),
-  metadata({ fillExcept: ['message', 'level', 'timestamp'] }),
-  printf(info => {
-    let result = `${info.timestamp} [${info.level}]: ${info.message} `;
-    if (Object.keys(info.metadata).length)
-      result += JSON.stringify(info.metadata);
-
-    return result;
-  })
-);
+const paperLogger = new winston.transports.Papertrail({
+  host: 'logs2.papertrailapp.com',
+  port: 16244,
+  inlineMeta: true,
+  logFormat: function (level, message) {
+    if (level === 'error') {
+      return `<<< ERROR >>> ${message}`;
+    }
+    return `${level} - ${message}`;
+  }
+});
 
 const logger = createLogger({
+  format: winston.format.simple(),
+  levels: winston.config.syslog.levels,
   transports: [
+    paperLogger,
     new transports.Console({
       format: combine(
         timestamp({ format: 'DD-MM-YYYY hh:mm:ss A' }),
@@ -23,16 +28,6 @@ const logger = createLogger({
         prettyPrint(),
         printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
       )
-    }),
-    new transports.File({
-      filename: 'error.log',
-      level: 'error',
-      format: fileFormat
-    }),
-    new transports.File({
-      filename: 'info.log',
-      level: 'info',
-      format: fileFormat
     })
   ]
 });
