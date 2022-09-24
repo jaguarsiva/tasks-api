@@ -12,14 +12,17 @@ export default function makePostUserController(
       id: result.getId(),
       username: result.getUsername(),
       fullname: result.getFullname(),
+      gender: result.getGender(),
       password: result.getPassword(),
       createdOn: result.getCreatedOn()
     };
+
     const insertedUser = await createUser(userDocument);
+    const { _id, __v, password, ...body } = insertedUser;
 
     return {
       status: 200,
-      body: insertedUser
+      body
     };
   };
 }

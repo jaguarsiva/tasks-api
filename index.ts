@@ -25,9 +25,9 @@ app.use('/api/v1', routes);
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
   logger.error('error', error);
 
-  if (error.exception) {
-    const { status, exception, ...errorBody } = error;
-    res.status(status).json(errorBody);
+  if (error.status === 400) {
+    const { status, ...errorBody } = error;
+    res.status(400).json(errorBody);
   } else if (error.response) {
     res.status(error.response.status).json(error.response);
   } else {

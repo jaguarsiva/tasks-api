@@ -5,6 +5,7 @@ export interface UserPayload {
   username: string;
   fullname: string;
   password: string;
+  gender: 'MALE' | 'FEMALE';
 }
 
 export interface User extends UserPayload {

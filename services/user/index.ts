@@ -4,7 +4,7 @@ import { User, UserDocument } from '../../utils/types/user.type';
 export default function makeUserService(model: Model<UserDocument, {}, {}>) {
   async function create(user: User) {
     const insertedUser = await model.create(user);
-    return insertedUser;
+    return insertedUser.toJSON();
   }
 
   async function findAll() {

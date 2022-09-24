@@ -1,6 +1,6 @@
 import { createLogger, format, transports } from 'winston';
 
-const { combine, metadata, printf, timestamp, colorize, json } = format;
+const { combine, metadata, printf, timestamp, colorize, prettyPrint } = format;
 
 const fileFormat = combine(
   timestamp({ format: 'DD-MM-YYYY hh:mm:ss A' }),
@@ -20,6 +20,7 @@ const logger = createLogger({
       format: combine(
         timestamp({ format: 'DD-MM-YYYY hh:mm:ss A' }),
         colorize(),
+        prettyPrint(),
         printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
       )
     }),

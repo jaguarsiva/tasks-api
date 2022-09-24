@@ -22,6 +22,11 @@ const userSchema = new Schema({
     required: true,
     unique: false
   },
+  gender: {
+    type: String,
+    required: true,
+    unique: false
+  },
   createdOn: {
     type: Date,
     default: new Date()
