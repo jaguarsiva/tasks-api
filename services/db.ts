@@ -24,11 +24,11 @@ export async function connect() {
   const mongoUri = process.env.MONGO_CLUSTER_URI!;
   const devDbName = process.env.DEV_DB_NAME!;
   const prodDbName = process.env.PROD_DB_NAME!;
-  const dbName = (process.env.NODE_ENV = 'development'
-    ? devDbName
-    : prodDbName);
+  const dbName =
+    process.env.NODE_ENV === 'development' ? devDbName : prodDbName;
 
   const uri = mongoUri + dbName + '?retryWrites=true&w=majority';
+
   const options = {
     autoIndex: true
   };
