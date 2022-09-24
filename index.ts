@@ -5,6 +5,7 @@ import routes from './routes';
 import jobs from './jobs';
 import db from './services/db';
 import cors from 'cors';
+import logger from './utils/logger';
 
 dotenv.config();
 
@@ -37,8 +38,8 @@ app.use((error: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 app.listen(port, () => {
-  console.log('app listening on port', port);
-  console.log('app running in', process.env.NODE_ENV, 'environment');
+  logger.info(`app listening on port ${port}`);
+  logger.info(`app running in ${process.env.NODE_ENV} environment`);
 });
 
 // CRON Jobs
