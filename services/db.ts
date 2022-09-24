@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import logger from '../utils/logger';
 dotenv.config();
 
 let dbInstance: typeof mongoose | null = null;
@@ -15,7 +16,7 @@ export function setup() {
   });
 
   mongoose.connection.on('error', error => {
-    console.error('connection error:', error);
+    logger.error('connection error:', error);
   });
 }
 

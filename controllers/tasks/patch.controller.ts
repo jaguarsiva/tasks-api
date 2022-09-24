@@ -1,12 +1,12 @@
 import { Request } from 'express';
-import generateId from '../../utils/idGenerator';
-import { Task, TaskStatus } from '../../utils/types/task.type';
+import { MakeTask, Task, TaskStatus } from '../../utils/types/task.type';
 import moment from 'moment-timezone';
 
 export default function makePatchTaskController(
   create: any,
   update: any,
-  findById: any
+  findById: any,
+  makeTask: MakeTask
 ) {
   async function updateTaskController(req: Request) {
     const userId = req.headers.user_id;
@@ -77,8 +77,8 @@ export default function makePatchTaskController(
       status: TaskStatus.PUSHED
     };
 
-    const result = await update(id, fieldsToUpdate);
-    if (result.matchedCount === 0) {
+    const updateResult = await update(id, fieldsToUpdate);
+    if (updateResult.matchedCount === 0) {
       return {
         status: 400,
         body: {
@@ -87,7 +87,7 @@ export default function makePatchTaskController(
       };
     }
 
-    if (result.modifiedCount < 1) {
+    if (updateResult.modifiedCount < 1) {
       return {
         status: 400,
         body: {
@@ -96,20 +96,24 @@ export default function makePatchTaskController(
       };
     }
 
+    const { title, description } = foundTask;
+    const date = moment().tz('Asia/Kolkata').add(1, 'd').format('DD/MM/YYYY');
+    const result = makeTask({ title, description, userId, date });
     const task: Task = {
-      id: generateId(),
-      title: foundTask.title,
-      description: foundTask.description,
-      userId: userId,
-      status: TaskStatus.ACTIVE,
-      date: moment().tz('Asia/Kolkata').add(1, 'd').format('DD/MM/YYYY')
+      id: result.getId(),
+      title: result.getTitle(),
+      userId: result.getUserId(),
+      description: result.getDescription(),
+      status: result.getStatus(),
+      date: result.getDate()
     };
+
     const createdTask = await create(task);
 
     return {
       status: 200,
       body: {
-        message: 'Task pushed to tomorrow',
+        message: 'Task pushed successfully',
         oldTask: foundTask,
         newTask: createdTask
       }

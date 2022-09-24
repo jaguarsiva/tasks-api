@@ -44,7 +44,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
     return tasks;
   }
 
-  async function updateAllActiveTasks() {
+  async function pushAllActiveTasks() {
     const filterExp = {
       status: TaskStatus.ACTIVE,
       date: moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
@@ -68,7 +68,7 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
     findByDate,
     update,
     findAllActiveTasks,
-    updateAllActiveTasks,
+    pushAllActiveTasks,
     insertPushedTasks
   });
 }

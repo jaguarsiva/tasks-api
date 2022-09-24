@@ -13,6 +13,7 @@ export interface TaskPayload {
   userId: string;
   title: string;
   description: string;
+  date?: string;
 }
 
 export interface Task extends TaskPayload {

@@ -23,10 +23,9 @@ app.use('/api/v1', routes);
 
 // Error Handler
 app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  // TODO: Error logging
+  logger.info(`${req.method} ${req.originalUrl}`);
+  logger.error('error', error);
 
-  console.log(req.method, req.originalUrl);
-  console.log(error);
   if (error.exception) {
     const { status, exception, ...errorBody } = error;
     res.status(status).json(errorBody);
@@ -44,5 +43,9 @@ app.listen(port, () => {
 
 // CRON Jobs
 
-// Everyday at 11:30 PM, this job pushes every active tasks
-cron.schedule('0 30 23 * * *', jobs.pushActiveTasksJob);
+// Everyday at 11:45 PM, this job pushes every active tasks
+cron.schedule('0 45 23 * * *', () => {
+  logger.info('');
+  logger.info('CRON Job triggered');
+  jobs.pushActiveTasksJob();
+});

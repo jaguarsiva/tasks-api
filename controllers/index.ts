@@ -36,7 +36,8 @@ const getTaskController = makeGetTaskController(
 const { updateTaskController, pushTaskController } = makePatchTaskController(
   services.task.create,
   services.task.update,
-  services.task.findById
+  services.task.findById,
+  entities.makeTask
 );
 
 // Callbacks

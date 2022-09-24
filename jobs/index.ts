@@ -1,10 +1,12 @@
 import makePushActiveTasksJob from './push.job';
 import services from '../services';
+import entities from '../entities';
 
 export const pushActiveTasksJob = makePushActiveTasksJob(
   services.task.findAllActiveTasks,
-  services.task.updateAllActiveTasks,
-  services.task.insertPushedTasks
+  services.task.pushAllActiveTasks,
+  services.task.insertPushedTasks,
+  entities.makeTask
 );
 
 const jobs = Object.freeze({
