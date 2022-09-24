@@ -14,13 +14,20 @@ export function setup() {
     };
   });
 
-  mongoose.connection.on('error', (error) => {
+  mongoose.connection.on('error', error => {
     console.error('connection error:', error);
   });
 }
 
 export async function connect() {
-  const uri: string = process.env.MONGO_URI!;
+  const mongoUri = process.env.MONGO_CLUSTER_URI!;
+  const devDbName = process.env.DEV_DB_NAME!;
+  const prodDbName = process.env.PROD_DB_NAME!;
+  const dbName = (process.env.NODE_ENV = 'development'
+    ? devDbName
+    : prodDbName);
+
+  const uri = mongoUri + dbName + '?retryWrites=true&w=majority';
   const options = {
     autoIndex: true
   };
