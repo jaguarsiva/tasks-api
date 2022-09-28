@@ -2,6 +2,7 @@ const winston = require('winston');
 require('winston-papertrail').Papertrail;
 const dotenv = require('dotenv');
 dotenv.config();
+import moment from 'moment-timezone';
 
 const { createLogger, format, transports } = winston;
 const { combine, printf, timestamp, colorize, prettyPrint } = format;
@@ -21,6 +22,10 @@ const paperLogger = new winston.transports.Papertrail({
   }
 });
 
+const timezoned = () => {
+  return moment().tz('Asia/Kolkata').format('DD/MM/YYYY hh:mm:ss A');
+};
+
 const logger = createLogger({
   format: winston.format.simple(),
   levels: winston.config.syslog.levels,
@@ -28,7 +33,7 @@ const logger = createLogger({
     paperLogger,
     new transports.Console({
       format: combine(
-        timestamp({ format: 'DD-MM-YYYY hh:mm:ss A' }),
+        timestamp({ format: timezoned }),
         colorize(),
         prettyPrint(),
         printf(info => `${info.timestamp} [${info.level}]: ${info.message}`)
