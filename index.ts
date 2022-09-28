@@ -1,6 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import dotenv from 'dotenv';
-import cron from 'node-cron';
+import { CronJob } from 'cron';
 import routes from './routes';
 import jobs from './jobs';
 import db from './services/db';
@@ -43,13 +43,23 @@ app.listen(port, () => {
 // CRON Jobs
 
 // Job running every 15 mins to keep the server awake
-cron.schedule('* */14 * * * *', () => {
-  logger.info('Keeping the system awake');
-});
+const wakeJob = new CronJob(
+  '0 */14 * * * *',
+  () => {
+    logger.info('Keeping the server awake...');
+  },
+  null,
+  true,
+  'Asia/Kolkata'
+);
+wakeJob.start();
 
-// Everyday at 09:15 PM, this job pushes every active tasks
-cron.schedule('0 15 21 * * *', () => {
-  logger.info('');
-  logger.info('CRON Job triggered');
-  jobs.pushActiveTasksJob();
-});
+// Everyday at 11:00 PM, this job pushes every active tasks
+const pushJob = new CronJob(
+  '0 0 23 * * *',
+  jobs.pushActiveTasksJob,
+  null,
+  true,
+  'Asia/Kolkata'
+);
+pushJob.start();

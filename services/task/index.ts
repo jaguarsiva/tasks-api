@@ -1,6 +1,7 @@
 import { Model } from 'mongoose';
 import { Task, TaskDocument, TaskStatus } from '../../utils/types/task.type';
 import moment from 'moment-timezone';
+import logger from '../../utils/logger';
 
 export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   async function create(task: Task) {
@@ -35,6 +36,8 @@ export default function makeTaskService(model: Model<TaskDocument, {}, {}>) {
   }
 
   async function findAllActiveTasks() {
+    const date = moment().tz('Asia/Kolkata').format('DD/MM/YYYY');
+    logger.info(`today date is ${date}`);
     const filterExp = {
       status: TaskStatus.ACTIVE,
       date: moment().tz('Asia/Kolkata').format('DD/MM/YYYY')
