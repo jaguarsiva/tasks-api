@@ -42,8 +42,13 @@ app.listen(port, () => {
 
 // CRON Jobs
 
-// Everyday at 11:45 PM, this job pushes every active tasks
-cron.schedule('0 45 23 * * *', () => {
+// Job running every 15 mins to keep the server awake
+cron.schedule('* */14 * * * *', () => {
+  logger.info('Keeping the system awake');
+});
+
+// Everyday at 09:15 PM, this job pushes every active tasks
+cron.schedule('0 15 21 * * *', () => {
   logger.info('');
   logger.info('CRON Job triggered');
   jobs.pushActiveTasksJob();
